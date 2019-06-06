@@ -1,0 +1,9 @@
+Package: com.level3tjg.dictionaryfirst
+Name: DictionaryFirst
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Show Dictionary entries first in Spotlight search
+Maintainer: level3tjg
+Author: level3tjg
+Section: Tweaks
