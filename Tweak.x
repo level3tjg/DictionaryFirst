@@ -2,12 +2,7 @@
 -(NSDictionary *)dictionaryRepresentation;
 @end
 
-@interface SPUIResultViewController : NSObject
--(NSArray *)resultSections;
--(void)setResultSections:(NSArray *)sections;
-@end
-
-%hook SPUIResultViewController
+%hook HookClass
 -(void)setResultSections:(NSOrderedSet *)sectionsSet{
 	NSMutableArray *sections = [sectionsSet mutableCopy];
 	for (int i = 0; i < [sections count]; i++){
@@ -20,3 +15,12 @@
 	%orig([sections copy]);
 }
 %end
+
+%ctor{
+	Class resultClass;
+	if(@available(iOS 13, *))
+		resultClass = %c(SPUIResultsViewController);
+	else
+		resultClass = %c(SPUIResultViewController);
+	%init(HookClass = resultClass);
+}
