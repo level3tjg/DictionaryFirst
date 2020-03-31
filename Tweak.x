@@ -1,15 +1,18 @@
 @interface SFMutableResultSection : NSObject
+@property (nonatomic, readonly) NSString *bundleIdentifier;
 -(NSDictionary *)dictionaryRepresentation;
 @end
 
 %hook HookClass
 -(void)setResultSections:(NSOrderedSet *)sectionsSet{
 	NSMutableArray *sections = [sectionsSet mutableCopy];
-	for (int i = 0; i < [sections count]; i++){
+	for(int i = 0; i < [sections count]; i++){
 		SFMutableResultSection *section = [sections objectAtIndex:i];
-		if([[section dictionaryRepresentation][@"bundleIdentifier"] isEqualToString:@"com.apple.parsec.dictionary"] || [[section dictionaryRepresentation][@"bundleIdentifier"] isEqualToString:@"com.apple.dictionary"]){
+		NSString *bundleId = section.bundleIdentifier;
+		if([bundleId containsString:@"dictionary"]){
 			[sections removeObjectAtIndex:i];
 			[sections insertObject:section atIndex:0];
+			break;
 		}
 	}
 	%orig([sections copy]);
